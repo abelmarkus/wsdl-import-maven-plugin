@@ -14,35 +14,35 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.dkschlos</groupId>
+    <groupId>com.github.abelmarkus</groupId>
     <artifactId>wsdlget-maven-plugin</artifactId>
     <version>1.0.1</version>
     <name>wsdlget-maven-plugin Maven Mojo</name>
     <description>
         Maven plugin which downloads a wsdl and all referenced schema-files/inner-wsdls recursively to a specified target folder (default: src/main/resources/wsdl) and rewrites schema-locations in all files.
     </description>
-    <url>https://github.com/dkschlos/wsdlget-maven-plugin</url>
+    <url>https://github.com/abelmarkus/wsdlget-maven-plugin</url>
     <packaging>maven-plugin</packaging>
     <developers>
-        <developer>
-            <name>Dominik Schlosser</name>
-            <email>dominik.schlosser@gmail.com</email>
-            <url>http://www.dominik-schlosser.de</url>
-        </developer>
         <developer>
             <name>Marco Aversano</name>
             <email>abelmarkus@gmail.com</email>
             <url>https://github.com/abelmarkus</url>
         </developer>
+        <developer>
+            <name>Dominik Schlosser</name>
+            <email>dominik.schlosser@gmail.com</email>
+            <url>http://www.dominik-schlosser.de</url>
+        </developer>
     </developers>
     <scm>
         <connection>
-            scm:git:git@github.com:dkschlos/wsdlget-maven-plugin.git
+            scm:git:git@github.com:abelmarkus/wsdlget-maven-plugin.git
         </connection>
         <developerConnection>
-            scm:git:git@github.com:dkschlos/wsdlget-maven-plugin.git
+            scm:git:git@github.com:abelmarkus/wsdlget-maven-plugin.git
         </developerConnection>
-        <url>git@github.com:dkschlos/wsdlget-maven-plugin.git</url>
+        <url>git@github.com:abelmarkus/wsdlget-maven-plugin.git</url>
     </scm>
     <licenses>
         <license>
