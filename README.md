@@ -1,14 +1,14 @@
-# wsdlget-maven-plugin [![Build Status](https://travis-ci.org/dmn1k/wsdlget-maven-plugin.svg?branch=master)](https://travis-ci.org/dmn1k/wsdlget-maven-plugin)
+# wsdlget-maven-plugin
 
 Download WSDLs, imported WSDLs and referenced schema files. Schema and imported WSDL locations are rewritten to reference the local files.
 
 Usage example:
 
-```Java
+```xml
 <plugin>
-    <groupId>com.github.dkschlos</groupId>
-    <artifactId>wsdlget-maven-plugin</artifactId>
-    <version>1.0.0</version>
+    <groupId>com.github.abelmarkus</groupId>
+    <artifactId>wsdl-import-maven-plugin</artifactId>
+    <version>1.0.1</version>
     <configuration>
         <clearOutputDirectory>true</clearOutputDirectory>
         <outputPath>path/to/desired/output</outputPath>
@@ -31,5 +31,3 @@ Usage example:
 # Requirements
 
 Right now, at least Java Version 8
-
-
