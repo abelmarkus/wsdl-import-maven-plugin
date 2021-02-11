@@ -12,17 +12,18 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.abelmarkus</groupId>
-    <artifactId>wsdlget-maven-plugin</artifactId>
+    <artifactId>wsdl-import-maven-plugin</artifactId>
     <version>1.0.1</version>
-    <name>wsdlget-maven-plugin Maven Mojo</name>
+    <name>wsdl-import-maven-plugin Maven Mojo</name>
     <description>
         Maven plugin which downloads a wsdl and all referenced schema-files/inner-wsdls recursively to a specified target folder (default: src/main/resources/wsdl) and rewrites schema-locations in all files.
     </description>
-    <url>https://github.com/abelmarkus/wsdlget-maven-plugin</url>
+    <url>https://github.com/abelmarkus/wsdl-import-maven-plugin</url>
     <packaging>maven-plugin</packaging>
+
     <developers>
         <developer>
             <name>Marco Aversano</name>
@@ -35,15 +36,17 @@
             <url>http://www.dominik-schlosser.de</url>
         </developer>
     </developers>
+
     <scm>
         <connection>
-            scm:git:git@github.com:abelmarkus/wsdlget-maven-plugin.git
+            scm:git:git@github.com:abelmarkus/wsdl-import-maven-plugin.git
         </connection>
         <developerConnection>
-            scm:git:git@github.com:abelmarkus/wsdlget-maven-plugin.git
+            scm:git:git@github.com:abelmarkus/wsdl-import-maven-plugin.git
         </developerConnection>
-        <url>git@github.com:abelmarkus/wsdlget-maven-plugin.git</url>
+        <url>git@github.com:abelmarkus/wsdl-import-maven-plugin.git</url>
     </scm>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -51,20 +54,23 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>
-                https://oss.sonatype.org/content/repositories/snapshots
-            </url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>
-                https://oss.sonatype.org/service/local/staging/deploy/maven2/
-            </url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.report.outputEncoding>UTF-8</project.report.outputEncoding>
+    </properties>
+
     <profiles>
         <profile>
             <id>release</id>
@@ -78,7 +84,7 @@
                             <execution>
                                 <id>attach-sources</id>
                                 <goals>
-                                    <goal>jar</goal>
+                                    <goal>jar-no-fork</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -125,6 +131,7 @@
             </build>
         </profile>
     </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -155,6 +162,7 @@
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -182,8 +190,5 @@
             <version>1.7.30</version>
         </dependency>
     </dependencies>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.report.outputEncoding>UTF-8</project.report.outputEncoding>
-    </properties>
+
 </project>
