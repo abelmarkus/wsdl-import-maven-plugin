@@ -1,8 +1,8 @@
-# wsdlget-maven-plugin
+# wsdl-import-maven-plugin
 
 Download WSDLs, imported WSDLs and referenced schema files. Schema and imported WSDL locations are rewritten to reference the local files.
 
-Usage example:
+## Usage example:
 
 ```xml
 <plugin>
@@ -23,11 +23,37 @@ Usage example:
           </wsdl>
         </wsdls>
     </configuration>
+    <executions>
+        <execution>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>wsdl-import</goal>
+            </goals>
+        </execution>
+    </executions>
 </plugin>
 ```
 
-*mvn wsdlget:wsdlget*
+### Run with a maven profile:
+```xml
+<profile>
+    <id>updateWSDL</id>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.abelmarkus</groupId>
+                <artifactId>wsdl-import-maven-plugin</artifactId>
+                <!-- see above for configurations -->
+            </plugin>
+        </plugins>
+    </build>
+</profile>
+```
 
+### Or run directly from console:
+```bash
+mvn wsdl-import:wsdl-import
+```
 # Requirements
 
-Right now, at least Java Version 8
+JDK8+

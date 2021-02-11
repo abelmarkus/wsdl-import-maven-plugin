@@ -20,98 +20,98 @@ import java.util.Map;
 
 public class WsdlDownloader {
 
-    private final File baseFolder;
-    private final boolean subfolderByServiceName;
-    private final WsdlDefinition wsdl;
-    private final Map<String, String> uriToWsdl = new HashMap<String, String>();
+	private final File baseFolder;
+	private final boolean subfolderByServiceName;
+	private final WsdlDefinition wsdl;
+	private final Map<String, String> uriToWsdl = new HashMap<String, String>();
 
-    private int wsdlCount = 0;
+	private int wsdlCount = 0;
 
-    public WsdlDownloader(File baseFolder, WsdlDefinition wsdl, boolean subfolderByServiceName) {
-        this.baseFolder = baseFolder;
-        this.subfolderByServiceName = subfolderByServiceName;
-        this.wsdl = wsdl;
-    }
+	public WsdlDownloader(File baseFolder, WsdlDefinition wsdl, boolean subfolderByServiceName) {
+		this.baseFolder = baseFolder;
+		this.subfolderByServiceName = subfolderByServiceName;
+		this.wsdl = wsdl;
+	}
 
-    public void download() {
-        try {
-            Definition wsdlDefinition = readWsdl(wsdl.getUrl());
+	public void download() {
+		try {
+			Definition wsdlDefinition = readWsdl(wsdl.getUrl());
 
-            String serviceName = wsdl.getServiceName() == null
-                    ? extractServiceName(wsdlDefinition)
-                    : wsdl.getServiceName();
+			String serviceName = wsdl.getServiceName() == null
+					? extractServiceName(wsdlDefinition)
+					: wsdl.getServiceName();
 
-            uriToWsdl.put(wsdlDefinition.getDocumentBaseURI(), serviceName + ".wsdl");
-            write(wsdlDefinition, serviceName, serviceName + ".wsdl");
-        } catch (Exception e) {
-            throw new RuntimeException("WSDL writing failed!", e);
-        }
-    }
+			uriToWsdl.put(wsdlDefinition.getDocumentBaseURI(), serviceName + ".wsdl");
+			write(wsdlDefinition, serviceName, serviceName + ".wsdl");
+		} catch (Exception e) {
+			throw new RuntimeException("WSDL writing failed!", e);
+		}
+	}
 
-    private String extractServiceName(Definition wsdlDefinition) {
-        if (wsdlDefinition.getServices().isEmpty()) {
-            return "UnknownService";
-        }
+	private String extractServiceName(Definition wsdlDefinition) {
+		if (wsdlDefinition.getServices().isEmpty()) {
+			return "UnknownService";
+		}
 
-        return ((Service) wsdlDefinition.getServices().values().iterator().next()).getQName().getLocalPart();
-    }
+		return ((Service) wsdlDefinition.getServices().values().iterator().next()).getQName().getLocalPart();
+	}
 
-    private Definition readWsdl(String url) throws IllegalArgumentException, WSDLException {
-        WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
-        reader.setFeature("javax.wsdl.importDocuments", true);
-        Definition wsdlDefinition = reader.readWSDL(url);
-        return wsdlDefinition;
-    }
+	private Definition readWsdl(String url) throws IllegalArgumentException, WSDLException {
+		WSDLReader reader = WSDLFactory.newInstance().newWSDLReader();
+		reader.setFeature("javax.wsdl.importDocuments", true);
+		Definition wsdlDefinition = reader.readWSDL(url);
+		return wsdlDefinition;
+	}
 
-    @SuppressWarnings("unchecked")
-    private void write(Definition definition, String serviceName, String fileName) throws Exception {
-        Map<String, List<Import>> importMap = definition.getImports();
-        List<Import> imports = new ArrayList<Import>();
-        for (List<Import> value : importMap.values()) {
-            imports.addAll(value);
-        }
+	@SuppressWarnings("unchecked")
+	private void write(Definition definition, String serviceName, String fileName) throws Exception {
+		Map<String, List<Import>> importMap = definition.getImports();
+		List<Import> imports = new ArrayList<Import>();
+		for (List<Import> value : importMap.values()) {
+			imports.addAll(value);
+		}
 
-        if (!imports.isEmpty()) {
-            for (Import wsdlImport : imports) {
-                String wsdlLocation = wsdlImport.getDefinition().getDocumentBaseURI();
-                String extension = wsdlLocation.contains("xsd") ? ".xsd" : ".wsdl";
-                String fileNamePart = serviceName + wsdlCount++;
-                String wsdlName = fileNamePart + extension;
-                if (!uriToWsdl.containsKey(wsdlLocation)) {
-                    uriToWsdl.put(wsdlLocation, wsdlName);
-                    Definition innerDefinition = wsdlImport.getDefinition();
-                    write(innerDefinition, serviceName, wsdlName);
-                }
+		if (!imports.isEmpty()) {
+			for (Import wsdlImport : imports) {
+				String wsdlLocation = wsdlImport.getDefinition().getDocumentBaseURI();
+				String extension = wsdlLocation.contains("xsd") ? ".xsd" : ".wsdl";
+				String fileNamePart = serviceName + wsdlCount++;
+				String wsdlName = fileNamePart + extension;
+				if (!uriToWsdl.containsKey(wsdlLocation)) {
+					uriToWsdl.put(wsdlLocation, wsdlName);
+					Definition innerDefinition = wsdlImport.getDefinition();
+					write(innerDefinition, serviceName, wsdlName);
+				}
 
-                wsdlImport.setLocationURI((String) uriToWsdl.get(wsdlLocation));
-            }
-        }
-        File serviceFolder = getOrCreateServiceFolder(serviceName);
+				wsdlImport.setLocationURI((String) uriToWsdl.get(wsdlLocation));
+			}
+		}
+		File serviceFolder = getOrCreateServiceFolder(serviceName);
 
-        SchemaDownloader schemaDownloader = new SchemaDownloader(serviceFolder, definition, serviceName);
-        schemaDownloader.download();
+		SchemaDownloader schemaDownloader = new SchemaDownloader(serviceFolder, definition, serviceName);
+		schemaDownloader.download();
 
-        WSDLWriter wsdlWriter = WSDLFactory.newInstance().newWSDLWriter();
+		WSDLWriter wsdlWriter = WSDLFactory.newInstance().newWSDLWriter();
 
-        writeToFile(serviceFolder, fileName, wsdlWriter, definition);
-    }
+		writeToFile(serviceFolder, fileName, wsdlWriter, definition);
+	}
 
-    private void writeToFile(File serviceFolder, String fileName, WSDLWriter wsdlWriter, Definition definition) throws IOException, WSDLException {
-        OutputStreamWriter out = null;
-        try {
-            out = new OutputStreamWriter(new FileOutputStream(new File(serviceFolder, fileName)), "UTF-8");
-            wsdlWriter.writeWSDL(definition, out);
-        } finally {
-            if (out != null) {
-                out.close();
-            }
-        }
-    }
+	private void writeToFile(File serviceFolder, String fileName, WSDLWriter wsdlWriter, Definition definition) throws IOException, WSDLException {
+		OutputStreamWriter out = null;
+		try {
+			out = new OutputStreamWriter(new FileOutputStream(new File(serviceFolder, fileName)), "UTF-8");
+			wsdlWriter.writeWSDL(definition, out);
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
+	}
 
-    private File getOrCreateServiceFolder(String serviceName) throws IOException {
-        File serviceFolder = subfolderByServiceName ? new File(baseFolder, serviceName) : baseFolder;
-        serviceFolder.mkdirs();
-        return serviceFolder;
-    }
+	private File getOrCreateServiceFolder(String serviceName) throws IOException {
+		File serviceFolder = subfolderByServiceName ? new File(baseFolder, serviceName) : baseFolder;
+		serviceFolder.mkdirs();
+		return serviceFolder;
+	}
 
 }

@@ -11,41 +11,41 @@ import org.apache.maven.plugins.annotations.Parameter;
 import java.io.File;
 import java.util.List;
 
-@Mojo(name = "wsdlget", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
+@Mojo(name = "wsdl-import", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class WsdlGetMojo extends AbstractMojo {
 
-    @Parameter(required = true)
-    private List<WsdlDefinition> wsdls;
+	@Parameter(required = true)
+	private List<WsdlDefinition> wsdls;
 
-    @Parameter(defaultValue = "${project.basedir}/src/main/resources/wsdl")
-    private String outputPath;
+	@Parameter(defaultValue = "${project.basedir}/src/main/resources/wsdl")
+	private String outputPath;
 
-    @Parameter(defaultValue = "false")
-    private boolean subfolderByServiceName;
+	@Parameter(defaultValue = "false")
+	private boolean subfolderByServiceName;
 
-    @Parameter(defaultValue = "false")
-    private boolean clearOutputDirectory;
+	@Parameter(defaultValue = "false")
+	private boolean clearOutputDirectory;
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        File root = new File(outputPath);
-        if (clearOutputDirectory && root.exists()) {
-            deleteRecursively(root);
-        }
-        for (WsdlDefinition wsdl : wsdls) {
-            WsdlDownloader downloader = new WsdlDownloader(root, wsdl, subfolderByServiceName);
-            downloader.download();
-        }
-    }
+	@Override
+	public void execute() throws MojoExecutionException, MojoFailureException {
+		File root = new File(outputPath);
+		if (clearOutputDirectory && root.exists()) {
+			deleteRecursively(root);
+		}
+		for (WsdlDefinition wsdl : wsdls) {
+			WsdlDownloader downloader = new WsdlDownloader(root, wsdl, subfolderByServiceName);
+			downloader.download();
+		}
+	}
 
-    private static void deleteRecursively(File f) throws MojoExecutionException {
-        if (f.isDirectory()) {
-            for (File c : f.listFiles()) {
-                deleteRecursively(c);
-            }
-        }
-        if (!f.delete()) {
-            throw new MojoExecutionException("Failed to delete file: " + f);
-        }
-    }
+	private static void deleteRecursively(File f) throws MojoExecutionException {
+		if (f.isDirectory()) {
+			for (File c : f.listFiles()) {
+				deleteRecursively(c);
+			}
+		}
+		if (!f.delete()) {
+			throw new MojoExecutionException("Failed to delete file: " + f);
+		}
+	}
 }
