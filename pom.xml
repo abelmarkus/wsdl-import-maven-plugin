@@ -16,7 +16,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.abelmarkus</groupId>
     <artifactId>wsdl-import-maven-plugin</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>wsdl-import-maven-plugin Maven Mojo</name>
     <description>
         Maven plugin which downloads a wsdl and all referenced schema-files/inner-wsdls recursively to a specified target folder (default: src/main/resources/wsdl) and rewrites schema-locations in all files.
