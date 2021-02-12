@@ -1,5 +1,6 @@
 # Wsdl Import Maven Plugin
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.abelmarkus/wsdl-import-maven-plugin/badge.svg?subject=Maven%20Central)](https://maven-badges.herokuapp.com/maven-central/com.github.abelmarkus/wsdl-import-maven-plugin/)
+![Maven Build](https://github.com/abelmarkus/wsdl-import-maven-plugin/workflows/Maven%20Build/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%20License%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 Download WSDLs, imported WSDLs and referenced schema files. Schema and imported WSDL locations are rewritten to reference the local files.
