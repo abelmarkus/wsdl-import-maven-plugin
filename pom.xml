@@ -100,10 +100,9 @@
                 <configuration>
                     <installProject>false</installProject>
                     <verbose>false</verbose>
-<!--                    <keepBranch>true</keepBranch>-->
                     <skipTestProject>true</skipTestProject>
-                    <pushRemote>true</pushRemote>
-                    <commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+<!--                    <keepBranch>true</keepBranch>-->
+<!--                    <pushRemote>true</pushRemote>-->
 
                     <gitFlowConfig>
                         <!-- GitHub Flow -> productionBranch == developmentBranch.
