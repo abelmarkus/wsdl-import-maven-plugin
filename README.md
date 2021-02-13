@@ -11,7 +11,7 @@ Download WSDLs, imported WSDLs and referenced schema files. Schema and imported 
 <plugin>
     <groupId>com.github.abelmarkus</groupId>
     <artifactId>wsdl-import-maven-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <configuration>
         <clearOutputDirectory>true</clearOutputDirectory>
         <outputPath>path/to/desired/output</outputPath>
