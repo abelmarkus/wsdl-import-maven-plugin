@@ -18,13 +18,13 @@ Download WSDLs, imported WSDLs and referenced schema files. Schema and imported 
         <outputPath>path/to/desired/output</outputPath>
         <subfolderByServiceName>false</subfolderByServiceName>
         <wsdls>
-          <wsdl>
-            <url>http://someurl/service.wsdl</url>
-          </wsdl>
-          <wsdl>
-            <serviceName>betterNameForDownloadedFiles</serviceName>
-            <url>http://someurl/anotherService.wsdl</url>
-          </wsdl>
+            <wsdl>
+                <url>http://someurl/service.wsdl</url>
+            </wsdl>
+            <wsdl>
+                <serviceName>betterNameForDownloadedFiles</serviceName>
+                <url>http://someurl/anotherService.wsdl</url>
+            </wsdl>
         </wsdls>
     </configuration>
     <executions>
@@ -38,7 +38,39 @@ Download WSDLs, imported WSDLs and referenced schema files. Schema and imported 
 </plugin>
 ```
 
-### Run with a maven profile:
+## Details
+The configuration takes following parameters:
+1. clearOutputDirectory: if true delete output directory and all its content.
+2. outputPath: the target directory to write all downloaded files to  (default: src/main/resources/wsdl).
+3. subfolderByServiceName: if true add a subfolder to target directory based on serviceName stated in `wsdl` section.
+4. `wsdl` url: the URL of the WSDL file
+5. `wsdl` serviceName: better name for downloaded files
+
+### clearOutputDirectory
+if you want your target directory to be cleared at the beginning of the process.
+
+### outputPath
+The output folder to write all files to.
+
+### subfolderByServiceName
+Add a subfolder to target directory based on serviceName declared in `wsdl` section.
+
+### `wsdl` url
+This parameter references the URL location of the WSDL file to download.
+
+As of current version of this plugin, no proxy servers are supported, so the WSDL must be reachable directly. Also, the location must not be protected (e.g. no basic auth).
+
+### `wsdl` serviceName
+The base name for the output files.
+
+Taking 'someservice' as example serviceName, this files will be written, assuming that the WSDL file contains two schema imports:
+* someservice.wsdl
+* someservice0.xsd
+* someservice1.xsd
+
+The schema files will be named with a counting number, beginning at 0. The original schema file name from the WSDL file will be ignored and replaced by this name.
+
+## Run with a maven profile:
 ```xml
 <profile>
     <id>updateWSDL</id>
